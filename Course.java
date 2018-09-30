@@ -4,6 +4,7 @@ import java.util.Set;
 public class Course {
 	private String id;
 	private String name;
+	private String teacher=null;  //set teacher name of this course
 	private double fee;
 	private double cost;
 	private int max;   //max allowed enroll
@@ -11,6 +12,14 @@ public class Course {
 	
 	public Course() {
 		
+	}
+	
+	public void setTeacher(String teacher) {
+		this.teacher=teacher;
+	}
+	public String getTeacher()
+	{
+		return teacher;
 	}
 	
 	public Course(String id,String name,double fee,double cost) {

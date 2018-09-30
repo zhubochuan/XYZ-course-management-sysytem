@@ -9,8 +9,10 @@ public class Driver {
 	// store all student
 	static List<Student> student = new ArrayList<Student>();
 
+	public static Driver dr;
+
 	public static void main(String[] args) {
-		Driver dr = new Driver();
+		dr = new Driver();
 		// initial course into system
 		dr.initialCourse();
 		// initial student into system
@@ -21,8 +23,39 @@ public class Driver {
 		System.out.println("-----------------------------");
 		dr.getStudent();
 		System.out.println("-----------------------------");
+
 		// call the menu
-		dr.menu();
+		dr.log();
+	}
+
+	public void log() {
+		// log in function
+		System.out.println("1. log as student 2.log as administrator 3.Exit system");
+		Scanner slog = new Scanner(System.in);
+		int slog2 = slog.nextInt();
+		switch (slog2) {
+		case 1: // log as student
+			System.out.println("====student====");
+			System.out.println("----------------------------------");
+			System.out.println("your just can look through course info");
+			System.out.println("----------------------------------");
+			dr.getCourse();
+			System.out.println();
+			System.out.println("you will automatically log out as a student account");
+			System.out.println();
+			log();
+			break;
+		case 2: // log as admin
+			System.out.println("======admin======");
+			dr.menu();
+			break;
+		case 3:
+			System.out.println("see you");
+			System.exit(0);// exit the system
+		default:
+			System.out.println("invalid choice");
+			break;
+		}
 	}
 
 	// initial course and add them into system
@@ -53,10 +86,76 @@ public class Driver {
 	public void getCourse() {
 		for (Course c : course) {
 			System.out.println(
-					"Course Id:" + c.getId() + " Name:" + c.getName() + " fee" + c.getFee() + " cost" + c.getCost());
+					"Course Id:" + c.getId() + " Name:" + c.getName() + " fee" + c.getFee() + " cost" + c.getCost()+" teacher name "+c.getTeacher());
 		}
 	}
-
+	public void updatestudent()  //name, age, address
+	{
+		System.out.println("enter old name:");
+		Scanner oname=new Scanner(System.in);
+		String oname2=oname.nextLine();
+		for(Student s:student)
+		{
+			if(oname2.equals(s.getName()))
+			{
+				System.out.println("enter new name");
+				Scanner nname=new Scanner(System.in);
+				String nname2=nname.nextLine();
+				s.setName(nname2);  //set new name
+				System.out.println("name update finished");
+				/////////////////////
+				System.out.println("enter new age");
+				Scanner aname=new Scanner(System.in);
+				int aname2=aname.nextInt();
+				s.setAge(aname2);
+				System.out.println("age update finished");
+				
+				//////////////
+				System.out.println("enter new address");
+				Scanner dname=new Scanner(System.in);
+				String dname2=dname.nextLine();
+				s.setAddress(dname2);
+				System.out.println("address update finished");
+				break;
+			}
+		}
+	}
+	
+	public void changecoursename()
+	{
+		System.out.println("enter course id:");
+		Scanner up=new Scanner(System.in);
+		String up2=up.nextLine();
+		for(Course c: course) {
+			if(up2.equals(c.getId()))
+			{
+				System.out.println("enter new course name:");
+				Scanner ce=new Scanner(System.in);
+				String ce2=ce.nextLine();
+				c.setName(ce2);  //finished set teacher's name
+				System.out.println("course name set finished");
+				break;
+			}
+		}
+	}
+	
+	public void updateTeacher()
+	{
+		System.out.println("enter course id");
+		Scanner up=new Scanner(System.in);
+		String up2=up.nextLine();
+		for(Course c: course) {
+			if(up2.equals(c.getId()))
+			{
+				System.out.println("enter teacher name:");
+				Scanner te=new Scanner(System.in);
+				String te2=te.nextLine();
+				c.setTeacher(te2);  //finished set teacher's name
+				System.out.println("teacher set finished");
+				break;
+			}
+		}
+	}
 	// get all student info
 	public void getStudent() {
 		for (Student s : student) {
@@ -70,11 +169,14 @@ public class Driver {
 		System.out.println("=================");
 		System.out.println("Course Management");
 		System.out.println("=================");
-		System.out.println("1.Add a student"); // has student number limit
+		System.out.println("1.enrol a student"); // has student number limit
 		System.out.println("2.Withdraw a student");
 		System.out.println("3.Display a student list for a course");
 		System.out.println("4.Display the course figures"); // calculate cost and income, profit
-		System.out.println("5.Quit");
+		System.out.println("5.log out");
+		System.out.println("6. update coures teacher name");
+		System.out.println("7.change coures name");
+		System.out.println("8. change student information");
 		System.out.println("Enter an Option:");
 
 		Scanner s1 = new Scanner(System.in);
@@ -91,9 +193,24 @@ public class Driver {
 			break;
 		case "4": // display the course figures
 			figures();
+			System.out.println("-----------------------------");
+			dr.getCourse();
+			menu();
 			break;
-		case "5": // exit
-			System.exit(0);
+		case "5": // log out
+			log();
+			break;
+		case "6": //update teacher name of the course
+			updateTeacher();
+			menu();
+			break;
+		case "7": //update course name
+			changecoursename();
+			menu();
+			break;
+		case "8":
+			updatestudent();
+			menu();
 			break;
 		default:
 			System.out.println("error for menu choice");
@@ -122,12 +239,12 @@ public class Driver {
 					flag = 0;
 					break;
 				} // end of found course by id
-				// else {
-				// System.out.println("course not found");
-				// flag=1;
-				// // menu();
-				// // break;
-				// }
+					// else {
+					// System.out.println("course not found");
+					// flag=1;
+					// // menu();
+					// // break;
+					// }
 			}
 			if (flag == 1) {
 				System.out.println("course not found");
@@ -160,7 +277,7 @@ public class Driver {
 				System.out.println(c.getName() + ": Students " + c.students.size() + ", Cost " + 1000 + ", income:"
 						+ income + ",profit " + (income - 1000));
 			}
-			//sea-food cooking
+			// sea-food cooking
 			if (c.getId().equals("002")) {
 				double income = 0;
 
@@ -179,11 +296,11 @@ public class Driver {
 				System.out.println(c.getName() + ": Students " + c.students.size() + ", Cost " + 1000 + ", income:"
 						+ income + ",profit " + (income - 1000));
 			}
-			//sewing
+			// sewing
 			if (c.getId().equals("003")) {
 				double income = 0;
-				double cost=0;
-				
+				double cost = 0;
+
 				for (Student s : c.students) { // all student in this course
 
 					/*
@@ -192,20 +309,20 @@ public class Driver {
 					if (s.course.size() > 1) {
 						// 20%
 						income += (0.8 * 300);
-						cost+=100;
+						cost += 100;
 					} else {
 						income += 300;
-						cost+=100;
+						cost += 100;
 					}
 				}
 				System.out.println(c.getName() + ": Students " + c.students.size() + ", Cost " + cost + ", income:"
 						+ income + ",profit " + (income - cost));
 			}
-			//creative writing
+			// creative writing
 			if (c.getId().equals("004")) {
 				double income = 0;
-				double cost=0;
-				
+				double cost = 0;
+
 				for (Student s : c.students) { // all student in this course
 
 					/*
@@ -214,20 +331,20 @@ public class Driver {
 					if (s.course.size() > 1) {
 						// 20%
 						income += (0.8 * 200);
-						cost+=800;
+						cost += 800;
 					} else {
 						income += 200;
-						cost+=800;
+						cost += 800;
 					}
 				}
 				System.out.println(c.getName() + ": Students " + c.students.size() + ", Cost " + cost + ", income:"
 						+ income + ",profit " + (income - cost));
 			}
-			//business course
-			//sea-food cooking
+			// business course
+			// sea-food cooking
 			if (c.getId().equals("005")) {
 				double income = 0;
-				double cost=0;
+				double cost = 0;
 				for (Student s : c.students) { // all student in this course
 
 					/*
@@ -236,17 +353,17 @@ public class Driver {
 					if (s.course.size() > 1) {
 						// 20%
 						income += (0.8 * 200);
-						cost+=600;
+						cost += 600;
 					} else {
 						income += 200;
-						cost+=600;
+						cost += 600;
 					}
 				}
 				System.out.println(c.getName() + ": Students " + c.students.size() + ", Cost " + cost + ", income:"
 						+ income + ",profit " + (income - cost));
 			}
 		}
-		menu();
+	//	menu();
 	}// end of figures
 
 	// withdraw a student from a course
